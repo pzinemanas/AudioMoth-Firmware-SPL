@@ -6,7 +6,9 @@ The main changes are in the [filter](https://github.com/OpenAcousticDevices/Audi
 ## Organization
 
 /src includes the C sources of the firmware
+
 /bin includes the firmware compiled ready to [flash](https://github.com/OpenAcousticDevices/Flash) to AudioMoth
+
 /notebooks includes jupyter noteboks with the filter design process, calibration among others.
 
 

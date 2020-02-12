@@ -341,10 +341,10 @@ static char fileName[20];
 
 /* Firmware version and description */
 
-static uint8_t firmwareVersion[AM_FIRMWARE_VERSION_LENGTH] = { 1, 3, 0 };
+static uint8_t firmwareVersion[AM_FIRMWARE_VERSION_LENGTH] = { 1, 0, 0 };
 
 static uint8_t firmwareDescription[AM_FIRMWARE_DESCRIPTION_LENGTH] =
-		"AudioMoth-Firmware-Basic";
+		"AudioMoth-Firmware-SPL";
 
 /* dBA filter */
 

@@ -2,6 +2,8 @@
  * audioMoth.c
  * openacousticdevices.info
  * June 2017
+ *
+ * Edited by Pablo Zinemanas, 02/2020
  *****************************************************************************/
 
 #include <time.h>
@@ -373,29 +375,26 @@ void AudioMoth_UART_init() {
 	// Chip errata
 	//CHIP_Init();
 
-	// Enable oscillator to GPIO and USART1 modules
+	// Enable oscillator to GPIO and USAT1 modules
 	CMU_ClockEnable(cmuClock_GPIO, true);
-	CMU_ClockEnable(cmuClock_USART1, true);
+	CMU_ClockEnable(cmuClock_UART1, true);
 
 	// set pin modes for UART TX and RX pins
 	GPIO_PinModeSet(gpioPortB, 10, gpioModeInput, 0);
 	GPIO_PinModeSet(gpioPortB, 9, gpioModePushPull, 1);
 
 	// Initialize USART asynchronous mode and route pins
-	USART_InitAsync(USART1, &init);
-	USART1->ROUTE |= USART_ROUTE_TXPEN | USART_ROUTE_RXPEN;
+	USART_InitAsync(UART1, &init);
+	//UART1->ROUTE |= UART_ROUTE_TXPEN | UART_ROUTE_RXPEN;
 }
 
 void AudioMoth_UART_send(char* message, uint32_t size) {
-	// print welcome message
     for (int i = 0; i < size - 1 ; i++ )
     {
-    	message[i] = USART_Rx(USART1);
-      if (message[i] == '\r')
-      {
-        break; // Breaking on CR prevents it from being counted in the number of bytes
-      }
+		USART_Tx(UART1, message[j]);
     }
+    USART_Tx(UART1, '\r');
+    USART_Tx(UART1, '\f');
 }*/
 
 /* Interrupt handler for RTC, switch change events, microphone samples, timer overflow and DMA transfers */

@@ -2,6 +2,8 @@
  * main.c
  * openacousticdevices.info
  * June 2017
+ *
+ * Edited by Pablo Zinemanas, 02/2020
  *****************************************************************************/
 
 #include <time.h>

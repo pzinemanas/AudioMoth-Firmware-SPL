@@ -11,4 +11,4 @@ The main changes are in the [filter](https://github.com/OpenAcousticDevices/Audi
 
 /notebooks includes jupyter noteboks with the filter design process, calibration among others.
 
-
+Other folders are includes related to the AudioMoth original firmware.

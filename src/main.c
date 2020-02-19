@@ -58,13 +58,13 @@
 #define DC_BLOCKING_FACTOR                  0.995f
 
 /* dBa filter constant */
-#define GA									1.2589254117941673f
-#define PI									3.141592653589793238462f
-#define CALdBA_low							71.8f
-#define CALdBA_low_med						71.8f
-#define CALdBA_med							71.8f
-#define CALdBA_med_high						71.8f
-#define CALdBA_high							71.8f
+#define GA                                  1.2589254117941673f
+#define PI                                  3.141592653589793238462f
+#define CALdBA_low                          71.8f
+#define CALdBA_low_med                      71.8f
+#define CALdBA_med                          71.8f
+#define CALdBA_med_high                     71.8f
+#define CALdBA_high                         71.8f
 
 #define LOG_BUFFER_LENGTH					50
 /* Useful macros */

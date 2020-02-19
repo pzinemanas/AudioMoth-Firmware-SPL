@@ -368,6 +368,8 @@ static uint32_t n;
 static char logFilename[20];
 static char logBuffer[LOG_BUFFER_LENGTH];
 
+float cal_offset;
+
 /* Microphone compensation filter */
 float fRec0_comp[2];
 float fRec1_comp[2];
@@ -544,6 +546,18 @@ static void init_dba_filter() {
 	sprintf(logFilename, "spl%01d.log", 0);
 }
 
+
+static void find_calibration_offset() {
+	cal_offset = 0.0;
+	switch (configSettings->gain) {
+		case 0: cal_offset = CALdBA_low; break;
+		case 1: cal_offset = CALdBA_low_med; break;
+		case 2: cal_offset = CALdBA_med; break;
+		case 3: cal_offset = CALdBA_med_high; break;
+		case 4: cal_offset = CALdBA_high; break;
+	}
+}
+
 /* Main function */
 int main(void) {
 
@@ -553,9 +567,11 @@ int main(void) {
 
 	/* Init dBA filter variables */
 	init_dba_filter();
+	find_calibration_offset();
 
 	/* init compensation filter */
 	init_compensation_filter();
+
 
 	AM_switchPosition_t switchPosition = AudioMoth_getSwitchPosition();
 
@@ -887,9 +903,6 @@ static float dBA_filter_step(float sample) {
 	fRec0[0] = (((b3[0] * fRec1[0]) + (b3[1] * fRec1[1])) - ((a4[0] * fRec0[1]) + (a4[1] * fRec0[2])));
 	filteredOutput_A = (float)((GA * w4*w4 * (((b4[0] * fRec0[0]) + (b4[1] * fRec0[1])) + (b4[2] * fRec0[2]))));
 
-	/* uncomment to save the A weighted signal*/
-	//filteredOutput = const_normalize * filteredOutput_A;
-
 	fRec3[2] = fRec3[1];
 	fRec3[1] = fRec3[0];
 	fRec2[1] = fRec2[0];
@@ -1187,16 +1200,6 @@ static AM_recordingState_t makeRecording(uint32_t currentTime,
 		return SWITCH_CHANGED;
 
 	/* Save SPL value to log file*/
-
-	float cal_offset;
-
-	switch (configSettings->gain) {
-	    case 0: cal_offset = CALdBA_low; break;
-	    case 1: cal_offset = CALdBA_low_med; break;
-	    case 2: cal_offset = CALdBA_med; break;
-	    case 3: cal_offset = CALdBA_med_high; break;
-	    case 4: cal_offset = CALdBA_high; break;
-	}
 
 	spl = 10.0f*log10f(spl) + cal_offset;
 	writeSPL_log(currentTime, spl);

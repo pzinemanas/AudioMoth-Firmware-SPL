@@ -66,7 +66,8 @@
 #define CALdBA_med_high                     71.8f
 #define CALdBA_high                         71.8f
 
-#define LOG_BUFFER_LENGTH					50
+#define LOG_BUFFER_LENGTH                   50
+
 /* Useful macros */
 
 #define FLASH_LED(led, duration) { \

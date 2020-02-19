@@ -60,11 +60,11 @@
 /* dBa filter constant */
 #define GA                                  1.2589254117941673f
 #define PI                                  3.141592653589793238462f
-#define CALdBA_low                          71.8f
-#define CALdBA_low_med                      71.8f
+#define CALdBA_low                          82.5f
+#define CALdBA_low_med                      78.4f
 #define CALdBA_med                          71.8f
-#define CALdBA_med_high                     71.8f
-#define CALdBA_high                         71.8f
+#define CALdBA_med_high                     67.8f
+#define CALdBA_high                         65.6f
 
 #define LOG_BUFFER_LENGTH                   50
 

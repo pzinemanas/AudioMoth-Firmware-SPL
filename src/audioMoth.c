@@ -367,35 +367,6 @@ uint32_t AudioMoth_getClockFrequency(AM_clockFrequency_t frequency) {
     return 48000000;
 
 }
-/*
-void AudioMoth_UART_init() {
-
-	USART_InitAsync_TypeDef init = USART_INITASYNC_DEFAULT;
-
-	// Chip errata
-	//CHIP_Init();
-
-	// Enable oscillator to GPIO and USAT1 modules
-	CMU_ClockEnable(cmuClock_GPIO, true);
-	CMU_ClockEnable(cmuClock_UART1, true);
-
-	// set pin modes for UART TX and RX pins
-	GPIO_PinModeSet(gpioPortB, 10, gpioModeInput, 0);
-	GPIO_PinModeSet(gpioPortB, 9, gpioModePushPull, 1);
-
-	// Initialize USART asynchronous mode and route pins
-	USART_InitAsync(UART1, &init);
-	//UART1->ROUTE |= UART_ROUTE_TXPEN | UART_ROUTE_RXPEN;
-}
-
-void AudioMoth_UART_send(char* message, uint32_t size) {
-    for (int i = 0; i < size - 1 ; i++ )
-    {
-		USART_Tx(UART1, message[j]);
-    }
-    USART_Tx(UART1, '\r');
-    USART_Tx(UART1, '\f');
-}*/
 
 /* Interrupt handler for RTC, switch change events, microphone samples, timer overflow and DMA transfers */
 

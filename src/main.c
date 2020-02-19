@@ -57,10 +57,14 @@
 
 #define DC_BLOCKING_FACTOR                  0.995f
 
-/*dBa filter constant */
+/* dBa filter constant */
 #define GA									1.2589254117941673f
 #define PI									3.141592653589793238462f
-#define CALdBA								53.0f
+#define CALdBA_low							71.8f
+#define CALdBA_low_med						71.8f
+#define CALdBA_med							71.8f
+#define CALdBA_med_high						71.8f
+#define CALdBA_high							71.8f
 
 #define LOG_BUFFER_LENGTH					50
 /* Useful macros */
@@ -363,6 +367,13 @@ static uint32_t n;
 static char logFilename[20];
 static char logBuffer[LOG_BUFFER_LENGTH];
 
+/* Microphone compensation filter */
+float fRec0_comp[2];
+float fRec1_comp[2];
+float a_comp;
+float b_comp;
+float G_comp;
+
 /* Function prototypes */
 
 static void flashLedToIndicateBatteryLife(void);
@@ -399,7 +410,7 @@ static void copyToBackupDomain(uint32_t *dst, uint8_t *src, uint32_t length) {
 
 }
 
-static void clear_fRec_variables() {
+static void reset_dBA_filter() {
 	for (int l0 = 0; (l0 < 3); l0 = (l0 + 1)) {
 		fRec0[l0] = 0.0f;
 		fRec3[l0] = 0.0f;
@@ -410,19 +421,87 @@ static void clear_fRec_variables() {
 	}
 }
 
-static void init_dba_filter() {
+// compensation filter
+static void reset_compensation_filter() {
+	for (int ix = 0; (ix < 2); ix = (ix + 1)) {
+		fRec0_comp[ix] = 0.0f;
+		fRec1_comp[ix] = 0.0f;
+	}
+}
 
-	//AudioMoth_UART_init();
-	//char message[4];
-	//message[0] = (char)'H';
-	//message[1] = (char)'O';
-	//message[2] = (char)'L';
-	//message[3] = (char)'A';
-	//AudioMoth_UART_send(message,4);
+static void init_compensation_filter() {
+	reset_compensation_filter();
+
+	fs = configSettings->sampleRate / configSettings->sampleRateDivider;
+
+/*	if (fs == 8000) {
+		a_comp = -0.479608;
+		b_comp = -0.356511;
+		G_comp = 0.9836;
+	} else if (fs == 16000) {
+		a_comp = -0.560221;
+		b_comp = -0.380794;
+		G_comp = 0.874524;
+	} else if (fs == 32000) {
+		a_comp = -0.751971;
+		b_comp = -0.319679;
+		G_comp = 0.666271;
+	} else if (fs == 48000) {
+		a_comp = -0.761089;
+		b_comp = -0.0525575;
+		G_comp = 0.496156;
+	} else {
+		a_comp = 0.0;
+		b_comp = 0.0;
+		G_comp = 1.0;
+	}*/
+
+	if (fs == 8000) {
+		a_comp = -0.97;
+		b_comp = -0.948;
+		G_comp = 1.0198586881755944;
+	} else if (fs == 16000) {
+		a_comp = -0.98;
+		b_comp = -0.97;
+		G_comp = 1.0068852990025103;
+	} else if (fs == 32000) {
+		a_comp = -0.998;
+		b_comp = -0.9895;
+		G_comp = 1.005779339050867;
+	} else if (fs == 48000) {
+		a_comp = -0.999;
+		b_comp = -0.993;
+		G_comp = 1.0033250259620856;
+	} else if (fs == 96000) {
+		a_comp = -0.999;
+		b_comp = -0.9964;
+		G_comp = 1.0;
+	} else if (fs == 192000) {
+		a_comp = -0.9995;
+		b_comp = -0.9979;
+		G_comp = 0.9992823605244088;
+	} else if (fs == 256000) {
+		a_comp = -0.9995;
+		b_comp = -0.9985;
+		G_comp = 0.9992823605244088;
+	} else if (fs == 192000) {
+		a_comp = -0.9995;
+		b_comp = -0.9979;
+		G_comp = 0.998417420445598;
+	} else if (fs == 384000) {
+		a_comp = -0.9996;
+		b_comp = -0.99895;
+		G_comp = 0.9981619947924345;
+	}
+
+}
+
+
+static void init_dba_filter() {
 
 	spl = 0.0f;
 	n = 0;
-	clear_fRec_variables();
+	reset_dBA_filter();
 
 	float f1 = 20.6f;
 	float f2 = 107.7f;
@@ -465,7 +544,6 @@ static void init_dba_filter() {
 }
 
 /* Main function */
-
 int main(void) {
 
 	/* Initialise device */
@@ -474,6 +552,9 @@ int main(void) {
 
 	/* Init dBA filter variables */
 	init_dba_filter();
+
+	/* init compensation filter */
+	init_compensation_filter();
 
 	AM_switchPosition_t switchPosition = AudioMoth_getSwitchPosition();
 
@@ -752,11 +833,11 @@ static void float_to_string(char* string, float value) {
 	float tmpFrac = tmpVal - tmpInt1;      // Get fraction (0.0123).
 	int tmpInt2 = trunc(tmpFrac * 10000);  // Turn into integer (123).
 
-	sprintf(string, "%s%04d.%04d ",tmpSign, tmpInt1, tmpInt2);
+	sprintf(string, "%s%d.%04d ",tmpSign, tmpInt1, tmpInt2);
 }
 
 /* Append message (spl value) to logfile */
-static void writeLog(uint32_t currentTime, float value) { // char *message
+static void writeSPL_log(uint32_t currentTime, float value) { // char *message
 
 	AudioMoth_enableFileSystem();
 
@@ -771,12 +852,51 @@ static void writeLog(uint32_t currentTime, float value) { // char *message
 	float_to_string(logBuffer, value);
 	AudioMoth_writeToFile(logBuffer, strnlen(logBuffer, LOG_BUFFER_LENGTH));
 
-/*	float_to_string(logBuffer, 10.0f*log10f(value)+CALdBA); //
-	AudioMoth_writeToFile(logBuffer, strnlen(logBuffer, LOG_BUFFER_LENGTH));*/
-
 	AudioMoth_writeToFile("\n", 1);
 
 	AudioMoth_closeFile();
+}
+
+
+/*static float compensation_mic_filter_step(float sample) {
+	float filtered_sample;
+	fRec0_comp[0] = (sample - (a_comp * fRec0_comp[1]));
+	filtered_sample = (float)(G_comp * (fRec0_comp[0] + (b_comp * fRec0_comp[1])));
+	fRec0_comp[1] = fRec0_comp[0];
+	return filtered_sample;
+}*/
+
+static float compensation_mic_filter_step(float sample) {
+	float filtered_sample;
+	fRec1_comp[0] = (sample - (a_comp * fRec1_comp[1]));
+	fRec0_comp[0] = ((fRec1_comp[0] + (b_comp * fRec1_comp[1])) - (a_comp * fRec0_comp[1]));
+	filtered_sample = (float) (G_comp * (fRec0_comp[0] + (b_comp * fRec0_comp[1])));
+	fRec1_comp[1] = fRec1_comp[0];
+	fRec0_comp[1] = fRec0_comp[0];
+	return filtered_sample;
+}
+
+
+
+static float dBA_filter_step(float sample) {
+	float filteredOutput_A;
+	fRec3[0] = (sample - ((a1[0] * fRec3[1]) + (a1[1] * fRec3[2])));
+	fRec2[0] = ((((b1[0] * fRec3[0]) + (b1[1] * fRec3[1])) + (b1[2] * fRec3[2])) - (a2 * fRec2[1]));
+	fRec1[0] = (((b2[0] * fRec2[0]) + (b2[1] * fRec2[1])) - (a3 * fRec1[1]));
+	fRec0[0] = (((b3[0] * fRec1[0]) + (b3[1] * fRec1[1])) - ((a4[0] * fRec0[1]) + (a4[1] * fRec0[2])));
+	filteredOutput_A = (float)((GA * w4*w4 * (((b4[0] * fRec0[0]) + (b4[1] * fRec0[1])) + (b4[2] * fRec0[2]))));
+
+	/* uncomment to save the A weighted signal*/
+	//filteredOutput = const_normalize * filteredOutput_A;
+
+	fRec3[2] = fRec3[1];
+	fRec3[1] = fRec3[0];
+	fRec2[1] = fRec2[0];
+	fRec1[1] = fRec1[0];
+	fRec0[2] = fRec0[1];
+	fRec0[1] = fRec0[0];
+
+	return filteredOutput_A;
 }
 
 /* Remove DC offset from the microphone samples */
@@ -789,7 +909,6 @@ static void filter(int16_t *source, int16_t *dest, uint8_t sampleRateDivider,
 	int32_t scaledPreviousFilterOutput;
 
 	int index = 0;
-
 
 	for (int i = 0; i < size; i += sampleRateDivider) {
 
@@ -816,25 +935,16 @@ static void filter(int16_t *source, int16_t *dest, uint8_t sampleRateDivider,
 		//filteredOutput = sample;
 
 		float const_normalize = 3276.8f;
-		float input = (float)sample / const_normalize;
+		float input;// = (float)sample / const_normalize;
 
-		fRec3[0] = (input - ((a1[0] * fRec3[1]) + (a1[1] * fRec3[2])));
-		fRec2[0] = ((((b1[0] * fRec3[0]) + (b1[1] * fRec3[1])) + (b1[2] * fRec3[2])) - (a2 * fRec2[1]));
-		fRec1[0] = (((b2[0] * fRec2[0]) + (b2[1] * fRec2[1])) - (a3 * fRec1[1]));
-		fRec0[0] = (((b3[0] * fRec1[0]) + (b3[1] * fRec1[1])) - ((a4[0] * fRec0[1]) + (a4[1] * fRec0[2])));
-		filteredOutput_A = (float)((GA * w4*w4 * (((b4[0] * fRec0[0]) + (b4[1] * fRec0[1])) + (b4[2] * fRec0[2]))));
+		input = compensation_mic_filter_step((float)sample / const_normalize);
+		filteredOutput_A = dBA_filter_step(input);
 
 		/* uncomment to save the A weighted signal*/
 		//filteredOutput = const_normalize * filteredOutput_A;
 
-		fRec3[2] = fRec3[1];
-		fRec3[1] = fRec3[0];
-		fRec2[1] = fRec2[0];
-		fRec1[1] = fRec1[0];
-		fRec0[2] = fRec0[1];
-		fRec0[1] = fRec0[0];
-
 		spl = (n*spl + filteredOutput_A*filteredOutput_A)/(n+1); // y[n] = (n*y[n]+x[n])/(n+1)
+
 		n += 1;
 
 		if (filteredOutput > INT16_MAX) {
@@ -1076,11 +1186,25 @@ static AM_recordingState_t makeRecording(uint32_t currentTime,
 		return SWITCH_CHANGED;
 
 	/* Save SPL value to log file*/
-	spl = 10.0f*log10f(spl)+CALdBA;
-	writeLog(currentTime, spl);
+
+	float cal_offset;
+
+	switch (configSettings->gain) {
+	    case 0: cal_offset = CALdBA_low; break;
+	    case 1: cal_offset = CALdBA_low_med; break;
+	    case 2: cal_offset = CALdBA_med; break;
+	    case 3: cal_offset = CALdBA_med_high; break;
+	    case 4: cal_offset = CALdBA_high; break;
+	}
+
+	spl = 10.0f*log10f(spl) + cal_offset;
+	writeSPL_log(currentTime, spl);
+
+	/* reset filters */
 	spl = 0.0f;
 	n = 0;
-	clear_fRec_variables();
+	reset_dBA_filter();
+	reset_compensation_filter();
 
 	return RECORDING_OKAY;
 

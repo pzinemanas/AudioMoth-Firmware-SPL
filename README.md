@@ -10,13 +10,17 @@ In order to have an almost flat microphone's frequency response, we implement an
 
 Note that unlike other methods based on the frequency domain, we apply the weighting on the time-domain of the signal. See [A_weighting_filter notebook](https://github.com/pzinemanas/AudioMoth-Firmware-SPL/blob/master/notebooks/A_weighting_filter.ipynb) for more details.
 
+## Flashing this firmware to Audiomoth
+To flash this firmware to the AudioMoth, follow the instructions from the [OpenAcoustic team](https://github.com/OpenAcousticDevices/Flash). 
 
+## Editing this firmware
+To edit this firmware, clone this repository and follow the instructions from the [AudioMoth wiki](https://github.com/OpenAcousticDevices/AudioMoth-Project/wiki/AudioMoth). 
 
-## Organization
+## Organization of the repository
 
 /src --> includes the C sources of the firmware
 
-/bin --> includes the firmware compiled ready to [flash](https://github.com/OpenAcousticDevices/Flash) to AudioMoth
+/bin --> includes the compiled firmware ready to [flash](https://github.com/OpenAcousticDevices/Flash) to AudioMoth
 
 /notebooks --> includes jupyter noteboks with the filter design process, calibration among others.
 

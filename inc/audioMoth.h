@@ -157,8 +157,3 @@ bool AudioMoth_closeFile();
 /* Debugging */
 
 void AudioMoth_setupSWOForPrint(void);
-
-/* UART */
-
-/*void AudioMoth_UART_init(void);
-void AudioMoth_UART_send(char* message, uint32_t size);*/

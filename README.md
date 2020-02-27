@@ -1,5 +1,5 @@
 # AudioMoth-Firmware-SPL
-This repository contains a firmware for AudioMoth. It consits in an adaptation of the firmware publicated in [AudioMoth-Project](https://github.com/OpenAcousticDevices/AudioMoth-Project) and [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic) to calculate SPL (dBA). 
+This repository contains a firmware for AudioMoth. It consists in an adaptation of the firmware published in [AudioMoth-Project](https://github.com/OpenAcousticDevices/AudioMoth-Project) and [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic) to calculate SPL (dBA). 
 
 We use the 1.3.0 version of AudioMoth firmware as a base. We add the SPL library (`src/spl.c` and `inc/spl.h`) that includes all the functions related to the SPL estimation. 
 
@@ -22,6 +22,7 @@ To edit this firmware, clone this repository and follow the instructions from th
 
 ## Organization of the repository
 
+This repository is organized as follows:
 
 ````
 AudioMoth-Firmware-SPL/
@@ -42,8 +43,8 @@ AudioMoth-Firmware-SPL/
 |  |- A_weighting_filter.ipynb ________ # Filter desing process of A_weighting filter
 |  |- Mic_compensation_filter.ipynb ___ # Filter desing process of compensation filter
 ````
-Other folders are includes related to the AudioMoth original firmware.
+Other folders are libraries includes in the AudioMoth original firmware.
 
 ## Licence
-We use the same licence (MIT) that [AudioMoth-Project](https://github.com/OpenAcousticDevices/AudioMoth-Project), Copyright (c) 2017 OpenAcousticDevices. Files `src/spl.c` and `inc/spl.h` and the modifications of `src/main.c` have Copyright (c) 2020 Pablo Zinemanas.
+We use the same license (MIT) that [AudioMoth-Project](https://github.com/OpenAcousticDevices/AudioMoth-Project), Copyright (c) 2017 OpenAcousticDevices. Files `src/spl.c` and `inc/spl.h` and the modifications of `src/main.c` have Copyright (c) 2020 Pablo Zinemanas.
 

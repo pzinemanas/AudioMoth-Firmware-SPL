@@ -14,23 +14,31 @@
 #include "spl.h"
 #include "audioMoth.h"
 
+/* Temp variables of dbA filter */
 static float fRec0[3],fRec1[2],fRec2[2],fRec3[3];
 
+/* dbA filter coefficients */
 static float a1[2],b1[3],a2,b2[2],a3,b3[2],a4[2],b4[3];
 
+/* dbA filter cut frequencies */
 static float w1,w2,w3,w4;
 
+/* global variables of SPL and number of samples */
 extern float spl;
 extern uint32_t n;
 
+/* file name and buffer for SD memory */
 static char logFilename[20];
 static char logBuffer[LOG_BUFFER_LENGTH];
 
+/* Offset of the SPL measure (found in calibration) */
 extern float cal_offset;
 
-/* Microphone compensation filter */
+/* Temp variables of microphone compensation filter */
 float fRec0_comp[2];
 float fRec1_comp[2];
+
+/* Coefficients of the compensation filter */
 float a_comp;
 float b_comp;
 float G_comp;

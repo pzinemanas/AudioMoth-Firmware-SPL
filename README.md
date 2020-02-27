@@ -29,5 +29,5 @@ To edit this firmware, clone this repository and follow the instructions from th
 Other folders are includes related to the AudioMoth original firmware.
 
 ## Licence
-We use the same licence (MIT) that [AudioMoth-Project](https://github.com/OpenAcousticDevices/AudioMoth-Project), Copyright (c) 2017 OpenAcousticDevices. Files src/spl.c and src/spl.h and the modification of the src/main.c have Copyright (c) 2020 Pablo Zinemanas.
+We use the same licence (MIT) that [AudioMoth-Project](https://github.com/OpenAcousticDevices/AudioMoth-Project), Copyright (c) 2017 OpenAcousticDevices. Files src/spl.c and inc/spl.h and the modifications of src/main.c have Copyright (c) 2020 Pablo Zinemanas.
 

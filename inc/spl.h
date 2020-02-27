@@ -1,17 +1,17 @@
 /* ----------------------------------------------------------------------
-* Copyright (C) 2020 Pablo Zinemanas. All rights reserved.
-*
-* $Date:        26. February 2020
-* $Revision:    V1.0.0
-*
-* Project:      AudioMoth-Firmware-SPL
-* Title:        spl.h
-*
-* Description:  This library includes functions to do the microphone
-*               compensation filter, A-weighting filter and save SPL
-*               to SD memory.
-*
-* pablo.zinemanas@upf.edu
+ * Copyright (C) 2020 Pablo Zinemanas. All rights reserved.
+ *
+ * $Date:        26. February 2020
+ * $Revision:    V1.0.0
+ *
+ * Project:      AudioMoth-Firmware-SPL
+ * Title:        spl.h
+ *
+ * Description:  This library includes functions to do the microphone
+ *               compensation filter, A-weighting filter and save SPL
+ *               to SD memory.
+ *
+ * pablo.zinemanas@upf.edu
  * -------------------------------------------------------------------- */
 
 #ifndef INC_SPL_H_
@@ -37,9 +37,9 @@
 /**
  * Reset compensation filter.
  *
- * Set temporal variables of the compensation filter to zero to be ready for
- * the next signal. Has to be called when the program starts and when the filtering
- * is finished.
+ * Set temporal variables of the compensation filter to zero to be ready
+ * for the next signal. Has to be called when the program starts and
+ * when the filtering is finished.
  *
  */
 void SPL_reset_compensation_filter();
@@ -47,8 +47,8 @@ void SPL_reset_compensation_filter();
 /**
  * Init compensation filter.
  *
- * Initialize the coefficients of the compensation filter in function of the
- * sampling rate.
+ * Initialize the coefficients of the compensation filter in function of
+ * the sampling rate.
  *
  * @param fs Sampling rate in Hz.
  */
@@ -82,8 +82,8 @@ void SPL_find_calibration_offset(int gain);
  * Reset dbA filter.
  *
  * Set temporal variables of the dbA filter to zero to be ready for
- * the next signal. Has to be called when the program starts and when the filtering
- * is finished.
+ * the next signal. Has to be called when the program starts and when the
+ * filtering is finished.
  *
  */
 void SPL_reset_dBA_filter();
@@ -118,6 +118,5 @@ float SPL_dBA_filter_step(float sample);
  * @param value SPL value
  */
 void SPL_write_log(uint32_t currentTime, float value);
-
 
 #endif /* INC_SPL_H_ */

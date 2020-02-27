@@ -1,7 +1,7 @@
 # AudioMoth-Firmware-SPL
 This repository contains a firmware for AudioMoth. It consits in an adaptation of the firmware publicated in [AudioMoth-Project](https://github.com/OpenAcousticDevices/AudioMoth-Project) and [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic) to calculate SPL (dBA). 
 
-We use the 1.3.0 version of AudioMoth firmware as a base. We add the SPL library (src/spl.c and inc/spl.h) that includes all the functions related to the SPL estimation. 
+We use the 1.3.0 version of AudioMoth firmware as a base. We add the SPL library (`src/spl.c` and inc/spl.h) that includes all the functions related to the SPL estimation. 
 
 The main changes are in the [filter](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic/blob/master/main.c#L609) function of the 1.3.0 version of firmware. In this function, we add the implementation of two real-time filters to compensate the microphone frequency response ant to apply the A-weighting to the signal. 
 

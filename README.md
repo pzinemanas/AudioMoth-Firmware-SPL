@@ -5,7 +5,7 @@ We use the 1.3.0 version of AudioMoth firmware as a base. We add the SPL library
 
 The main modifications of the `src/main.c` file of [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic) are in the [filter](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic/blob/master/main.c#L609). In this function, we add the call of the microphone frequency response compensation and the A-weighting filter of the signal. 
 
-## Singal processing
+## Signal processing
 ### Microphone response compensation
 In order to have an almost flat microphone's frequency response, we implement an IIR filter that compensates the response in the low frequencies. In the near future, we are going to do some experiments to better do this compensation. See [Mic_compensation_filter](https://github.com/pzinemanas/AudioMoth-Firmware-SPL/blob/master/notebooks/Mic_compensation_filter.ipynb) notebook for more details about filter design process.
 

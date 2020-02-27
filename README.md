@@ -29,16 +29,16 @@ AudioMoth-Firmware-SPL/
 |  |- AudiMoth.c ______________________ # AudioMoth library
 |  |- spl.c ___________________________ # SPL library
 |
-|  |- inc/ ____________________________ # Firmware header files
-|    |- AudiMoth.h ____________________ # AudioMoth header
-|    |- spl.h _________________________ # SPL library header
+|- inc/ _______________________________ # Firmware header files
+|  |- AudiMoth.h ______________________ # AudioMoth header
+|  |- spl.h ___________________________ # SPL library header
 |
-|  |- bin/
-|    |- AudioMoth-Firmware-SPL.bin ____ # Compiled firmware ready to AudioMoth
+|- bin/
+|  |- AudioMoth-Firmware-SPL.bin ______ # Compiled firmware ready to AudioMoth
 |
-|  |- notebooks/ ______________________ # Jupyter noteboks
-|    |- A_weighting_filter.ipynb ______ # Filter desing process of A_weighting filter
-|    |- Mic_compensation_filter.ipynb _ # Filter desing process of compensation filter
+|- notebooks/ _________________________ # Jupyter noteboks
+|  |- A_weighting_filter.ipynb ________ # Filter desing process of A_weighting filter
+|  |- Mic_compensation_filter.ipynb ___ # Filter desing process of compensation filter
 ````
 Other folders are includes related to the AudioMoth original firmware.
 

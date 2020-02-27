@@ -110,7 +110,10 @@ float SPL_compensation_mic_filter_step(float sample) {
 }
 
 /* Reset A-weighing filter */
-void SPL_reset_dBA_filter() {
+void SPL_reset_A_weighting_filter() {
+	spl = 0.0f;
+	n = 0;
+
 	for (int l0 = 0; (l0 < 3); l0 = (l0 + 1)) {
 		fRec0[l0] = 0.0f;
 		fRec3[l0] = 0.0f;
@@ -122,11 +125,9 @@ void SPL_reset_dBA_filter() {
 }
 
 /* Init A-weighing filter */
-void SPL_init_dba_filter(float fs) {
+void SPL_init_A_weighting_filter(float fs) {
 
-	spl = 0.0f;
-	n = 0;
-	SPL_reset_dBA_filter();
+	SPL_reset_A_weighting_filter();
 
 	float f1 = 20.6f;
 	float f2 = 107.7f;
@@ -166,7 +167,7 @@ void SPL_init_dba_filter(float fs) {
 	sprintf(logFilename, "SPL.log");
 }
 
-float SPL_dBA_filter_step(float sample) {
+float SPL_A_weighting_filter_step(float sample) {
 	float filteredOutput_A;
 	fRec3[0] = (sample - ((a1[0] * fRec3[1]) + (a1[1] * fRec3[2])));
 	fRec2[0] = ((((b1[0] * fRec3[0]) + (b1[1] * fRec3[1])) + (b1[2] * fRec3[2]))
@@ -224,7 +225,7 @@ void float_to_string(char* string, float value) {
 }
 
 /* Append message (spl value) to logfile */
-void SPL_write_log(uint32_t currentTime, float value) {
+void SPL_write_log(uint32_t currentTime) {
 
 	AudioMoth_enableFileSystem();
 
@@ -238,7 +239,7 @@ void SPL_write_log(uint32_t currentTime, float value) {
 
 	AudioMoth_writeToFile(logBuffer, strnlen(logBuffer, LOG_BUFFER_LENGTH));
 
-	float_to_string(logBuffer, value);
+	float_to_string(logBuffer, spl);
 	AudioMoth_writeToFile(logBuffer, strnlen(logBuffer, LOG_BUFFER_LENGTH));
 
 	AudioMoth_writeToFile("\n", 1);
@@ -246,3 +247,14 @@ void SPL_write_log(uint32_t currentTime, float value) {
 	AudioMoth_closeFile();
 }
 
+/* Update SPL value */
+void SPL_update_value(float value) {
+	// Mean value of SPL sequence
+	spl = (n*spl + value*value)/(n+1); // y[n] = (n*y[n]+x^2[n])/(n+1)
+	n += 1;
+}
+
+/* convert SPL value to dB */
+void SPL_to_dB() {
+	spl = 10.0f*log10f(spl) + cal_offset; //to dB
+}

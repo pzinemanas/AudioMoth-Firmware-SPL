@@ -406,7 +406,7 @@ int main(void) {
 	float fs = configSettings->sampleRate / configSettings->sampleRateDivider;
 
 	/* Init dBA filter variables */
-	SPL_init_dba_filter(fs);
+	SPL_init_A_weighting_filter(fs);
 	SPL_find_calibration_offset(configSettings->gain);
 
 	/* init compensation filter */
@@ -719,14 +719,11 @@ static void filter(int16_t *source, int16_t *dest, uint8_t sampleRateDivider,
 		float input;// = (float)sample / const_normalize;
 
 		input = SPL_compensation_mic_filter_step((float)sample / const_normalize);
-		filteredOutput_A = SPL_dBA_filter_step(input);
+		filteredOutput_A = SPL_A_weighting_filter_step(input);
+		SPL_update_value(filteredOutput_A);
 
 		/* uncomment to save the A weighted signal*/
 		//filteredOutput = const_normalize * filteredOutput_A;
-
-		spl = (n*spl + filteredOutput_A*filteredOutput_A)/(n+1); // y[n] = (n*y[n]+x[n])/(n+1)
-
-		n += 1;
 
 		if (filteredOutput > INT16_MAX) {
 
@@ -967,14 +964,11 @@ static AM_recordingState_t makeRecording(uint32_t currentTime,
 		return SWITCH_CHANGED;
 
 	/* Save SPL value to log file*/
-
-	spl = 10.0f*log10f(spl) + cal_offset;
-	SPL_write_log(currentTime, spl);
+	SPL_to_dB();
+	SPL_write_log(currentTime);
 
 	/* reset filters */
-	spl = 0.0f;
-	n = 0;
-	SPL_reset_dBA_filter();
+	SPL_reset_A_weighting_filter();
 	SPL_reset_compensation_filter();
 
 	return RECORDING_OKAY;

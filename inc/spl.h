@@ -65,6 +65,39 @@ void SPL_init_compensation_filter(float fs);
  */
 float SPL_compensation_mic_filter_step(float sample);
 
+/* dBA filter */
+
+/**
+ * Reset dbA filter.
+ *
+ * Set temporal variables of the dbA filter to zero to be ready for
+ * the next signal. Has to be called when the program starts and when the
+ * filtering is finished.
+ *
+ */
+void SPL_reset_A_weighting_filter();
+
+/**
+ * Init dBa filter.
+ *
+ * Initialize the coefficients of the dBa filter in function of the
+ * sampling rate.
+ *
+ * @param fs Sampling rate in Hz.
+ */
+void SPL_init_A_weighting_filter(float fs);
+
+/**
+ * Step of the dBa filter.
+ *
+ * Calculates the filter output given the input in a specific time, n.
+ * After calculation, update the temp filter variables.
+ *
+ * @param sample Sample of the input signal, x[n].
+ * @return The output of the filter in time n, y[n].
+ */
+float SPL_A_weighting_filter_step(float sample);
+
 /**
  * Find the calibration offset.
  *
@@ -76,38 +109,24 @@ float SPL_compensation_mic_filter_step(float sample);
  */
 void SPL_find_calibration_offset(int gain);
 
-/* dBA filter */
 
 /**
- * Reset dbA filter.
+ * Update spl value.
  *
- * Set temporal variables of the dbA filter to zero to be ready for
- * the next signal. Has to be called when the program starts and when the
- * filtering is finished.
+ * Updates the mean of the sequence x^2[n], where x[n] is the output
+ * signal of A-weighting filter.
  *
+ * @param value x[n].
  */
-void SPL_reset_dBA_filter();
+void SPL_update_value(float value);
 
 /**
- * Init dBa filter.
+ * Convert SPL value to dB
  *
- * Initialize the coefficients of the dBa filter in function of the
- * sampling rate.
+ * Convert the SPL value to dB and sum the calibration offset.
  *
- * @param fs Sampling rate in Hz.
  */
-void SPL_init_dba_filter(float fs);
-
-/**
- * Step of the dBa filter.
- *
- * Calculates the filter output given the input in a specific time, n.
- * After calculation, update the temp filter variables.
- *
- * @param sample Sample of the input signal, x[n].
- * @return The output of the filter in time n, y[n].
- */
-float SPL_dBA_filter_step(float sample);
+void SPL_to_dB();
 
 /**
  * Append a line in the LogFile.
@@ -117,6 +136,6 @@ float SPL_dBA_filter_step(float sample);
  * @param currentTime Time when the record process started.
  * @param value SPL value
  */
-void SPL_write_log(uint32_t currentTime, float value);
+void SPL_write_log(uint32_t currentTime);
 
 #endif /* INC_SPL_H_ */

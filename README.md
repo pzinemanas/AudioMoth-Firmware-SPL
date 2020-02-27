@@ -11,7 +11,7 @@ We estimate the SPL level using the audio signal recorded by the AudioMoth. We c
 
 <img src="https://render.githubusercontent.com/render/math?math=SPL = \frac{1}{N}\sum_{n=0}^{N-1} x_A^2[n]">
 
-where <img src="https://render.githubusercontent.com/render/math?math=N"> is the number of samples in the time <img src="https://render.githubusercontent.com/render/math?math=T">, and <img src="https://render.githubusercontent.com/render/math?math=x_A[n]"> is the [A-weighted](http://www.acoustic-glossary.co.uk/frequency-weighting.htm) signal. Also, as the AudioMoth microphone does not have a flat frequency response, is necessary to apply a filter its response. Therefore before we calculate <img src="https://render.githubusercontent.com/render/math?math=x_A[n]">, we apply the filter compensation. The next diagram illustrates the process flow.
+where <img src="https://render.githubusercontent.com/render/math?math=N"> is the number of samples in the time <img src="https://render.githubusercontent.com/render/math?math=T">, and <img src="https://render.githubusercontent.com/render/math?math=x_A[n]"> is the [A-weighted](http://www.acoustic-glossary.co.uk/frequency-weighting.htm) signal. Also, as the AudioMoth microphone does not have a flat frequency response, is necessary to apply a filter to compensate its response. Therefore before we calculate <img src="https://render.githubusercontent.com/render/math?math=x_A[n]">, we apply the filter compensation. The next diagram illustrates the process flow.
 
 <img src="./notebooks/imgs/diagram.png">
 

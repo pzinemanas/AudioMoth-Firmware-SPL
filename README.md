@@ -6,6 +6,9 @@ We use the 1.3.0 version of AudioMoth firmware as a base. We add the SPL library
 The main modifications of the `src/main.c` file of [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic) are in the [filter](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic/blob/master/main.c#L609). In this function, we add the call of the microphone frequency response compensation and the A-weighting filter of the signal. 
 
 ## Signal processing
+
+In order to compensate the microphone frequency response and to apply the A-weighting to the signal, we implement different Infinite Impulse Response (IIR) filters. When the filter order is too high, we split it into parts (first or second order filters). Each of this parts is implemented by the [Direct-Form-II (DF-II)](https://ccrma.stanford.edu/~jos/filters/Direct_Form_II.html) realization. We base our implementation in the result of the [faust filter library](http://faust.grame.fr/editor/libraries/doc/library.html#fi.iir).
+
 ### Microphone response compensation
 In order to have an almost flat microphone's frequency response, we implement an IIR filter that compensates the response in the low frequencies. In the near future, we are going to do some experiments to better do this compensation. See [Mic_compensation_filter](https://github.com/pzinemanas/AudioMoth-Firmware-SPL/blob/master/notebooks/Mic_compensation_filter.ipynb) notebook for more details about filter design process.
 
@@ -40,8 +43,8 @@ AudioMoth-Firmware-SPL/
 |  |- AudioMoth-Firmware-SPL.bin ______ # Compiled firmware ready to AudioMoth
 |
 |- notebooks/ _________________________ # Jupyter noteboks
-|  |- A_weighting_filter.ipynb ________ # Filter desing process of A_weighting filter
-|  |- Mic_compensation_filter.ipynb ___ # Filter desing process of compensation filter
+|  |- A_weighting_filter.ipynb ________ # Filter design process of A_weighting filter
+|  |- Mic_compensation_filter.ipynb ___ # Filter design process of compensation filter
 ````
 Other folders are libraries includes in the AudioMoth original firmware.
 

@@ -5,6 +5,15 @@ We use the 1.3.0 version of AudioMoth firmware as a base. We add the SPL library
 
 The main modifications of the `src/main.c` file of [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic) are in the [filter](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic/blob/master/main.c#L609). In this function, we add the call of the microphone frequency response compensation and the A-weighting filter of the signal. 
 
+## SPL calculation
+
+We estimate the SPL level using the audio signal recorded by the AudioMoth. We calculate the [LAeq,T](http://www.acoustic-glossary.co.uk/leq.htm) in the time basis, $T$, defined by the record duration configured in AudioMoth. Therefore, for each wav file record in AudioMoth, a SPL value is calculated and saved into a log file in the SD card. Thus, if $x[n]$ is the signal recorded by AudioMoth, we estimate the SPL by the mean energy:
+
+$$
+SPL = \sum_n=0^{T*fs-1} x_A^2[n],
+$$
+where $fs$ is the sampling rate and $x_A[n]$ is the signal after [A-weighted](http://www.acoustic-glossary.co.uk/frequency-weighting.htm). 
+
 ## Signal processing
 
 In order to compensate the microphone frequency response and to apply the A-weighting to the signal, we implement different Infinite Impulse Response (IIR) filters. When the filter order is too high, we split it into parts (first or second order filters). Each of this parts is implemented by the [Direct-Form-II (DF-II)](https://ccrma.stanford.edu/~jos/filters/Direct_Form_II.html) realization. We base our implementation in the result of the [faust filter library](http://faust.grame.fr/editor/libraries/doc/library.html#fi.iir).

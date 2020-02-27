@@ -24,15 +24,15 @@ static float a1[2], b1[3], a2, b2[2], a3, b3[2], a4[2], b4[3];
 static float w1, w2, w3, w4;
 
 /* global variables of SPL and number of samples */
-extern float spl;
-extern uint32_t n;
+float spl;
+uint32_t n;
 
 /* file name and buffer for SD memory */
 static char logFilename[20];
 static char logBuffer[LOG_BUFFER_LENGTH];
 
 /* Offset of the SPL measure (found in calibration) */
-extern float cal_offset;
+float cal_offset;
 
 /* Temp variables of microphone compensation filter */
 float fRec0_comp[2];

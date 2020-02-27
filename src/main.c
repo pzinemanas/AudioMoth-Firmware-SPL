@@ -354,11 +354,6 @@ static uint8_t firmwareVersion[AM_FIRMWARE_VERSION_LENGTH] = { 1, 0, 0 };
 static uint8_t firmwareDescription[AM_FIRMWARE_DESCRIPTION_LENGTH] =
 		"AudioMoth-Firmware-SPL";
 
-/* dBA filters */
-float spl;
-uint32_t n;
-float cal_offset;
-
 /* Function prototypes */
 
 static void flashLedToIndicateBatteryLife(void);

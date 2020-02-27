@@ -24,12 +24,12 @@ To edit this firmware, clone this repository and follow the instructions from th
 ````
 AudioMoth-Firmware-SPL/
 |
-|- src/
+|- src/ _______________________________ # Firmware source files
 |  |- main.c __________________________ # Main program (edited from AudioMoth firmware 1.3.0)
 |  |- AudiMoth.c ______________________ # AudioMoth library
 |  |- spl.c ___________________________ # SPL library
 |
-|  |- inc/
+|  |- inc/ ____________________________ # Firmware header files
 |    |- AudiMoth.h ____________________ # AudioMoth header
 |    |- spl.h _________________________ # SPL library header
 |

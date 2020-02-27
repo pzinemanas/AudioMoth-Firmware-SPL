@@ -1,9 +1,9 @@
 # AudioMoth-Firmware-SPL
 This repository contains a firmware for AudioMoth. It consits in an adaptation of the firmware publicated in [AudioMoth-Project](https://github.com/OpenAcousticDevices/AudioMoth-Project) and [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic) to calculate SPL (dBA). 
 
-We use the 1.3.0 version of AudioMoth firmware as a base. We add the SPL library (src/spl.c and inc/spl.h) that includes all the functions related to the SPL estimation. 
+We use the 1.3.0 version of AudioMoth firmware as a base. We add the SPL library (`src/spl.c` and `inc/spl.h`) that includes all the functions related to the SPL estimation. 
 
-The main modifications of the src/main.c file of [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic) are in the [filter](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic/blob/master/main.c#L609). In this function, we add the call of the microphone frequency response compensation and the A-weighting filter of the signal. 
+The main modifications of the `src/main.c` file of [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic) are in the [filter](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic/blob/master/main.c#L609). In this function, we add the call of the microphone frequency response compensation and the A-weighting filter of the signal. 
 
 ## Microphone response compensation
 In order to have an almost flat microphone's frequency response, we implement an IIR filter that compensates the response in the low frequencies. In the near future, we are going to do some experiments to better do this compensation. See [Mic_compensation_filter](https://github.com/pzinemanas/AudioMoth-Firmware-SPL/blob/master/notebooks/Mic_compensation_filter.ipynb) notebook for more details about filter design process.
@@ -20,14 +20,28 @@ To edit this firmware, clone this repository and follow the instructions from th
 
 ## Organization of the repository
 
-/src --> includes the C sources of the firmware
 
-/bin --> includes the compiled firmware ready to [flash](https://github.com/OpenAcousticDevices/Flash) to AudioMoth
-
-/notebooks --> includes jupyter noteboks with the filter design process, calibration among others.
-
+````
+AudioMoth-Firmware-SPL/
+|
+|- src/
+|  |- main.c __________________________ # Main program (edited from AudioMoth firmware 1.3.0)
+|  |- AudiMoth.c ______________________ # AudioMoth library
+|  |- spl.c ___________________________ # SPL library
+|
+|  |- inc/
+|    |- AudiMoth.h ____________________ # AudioMoth header
+|    |- spl.h _________________________ # SPL library header
+|
+|  |- bin/
+|    |- AudioMoth-Firmware-SPL.bin ____ # Compiled firmware ready to AudioMoth
+|
+|  |- notebooks/ ______________________ # Jupyter noteboks
+|    |- A_weighting_filter.ipynb ______ # Filter desing process of A_weighting filter
+|    |- Mic_compensation_filter.ipynb _ # Filter desing process of compensation filter
+````
 Other folders are includes related to the AudioMoth original firmware.
 
 ## Licence
-We use the same licence (MIT) that [AudioMoth-Project](https://github.com/OpenAcousticDevices/AudioMoth-Project), Copyright (c) 2017 OpenAcousticDevices. Files src/spl.c and inc/spl.h and the modifications of src/main.c have Copyright (c) 2020 Pablo Zinemanas.
+We use the same licence (MIT) that [AudioMoth-Project](https://github.com/OpenAcousticDevices/AudioMoth-Project), Copyright (c) 2017 OpenAcousticDevices. Files `src/spl.c` and `inc/spl.h` and the modifications of `src/main.c` have Copyright (c) 2020 Pablo Zinemanas.
 

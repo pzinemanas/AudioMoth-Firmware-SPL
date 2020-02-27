@@ -9,7 +9,7 @@ The main modifications of the `src/main.c` file of [AudioMoth-Firmware-Basic](ht
 
 We estimate the SPL level using the audio signal recorded by the AudioMoth. We calculate the [LAeq,T](http://www.acoustic-glossary.co.uk/leq.htm) in the time basis, <img src="https://render.githubusercontent.com/render/math?math=T">, defined by the record duration configured in AudioMoth. Therefore, for each wav file record in AudioMoth, a SPL value is calculated and saved into a log file in the SD card. Thus, if <img src="https://render.githubusercontent.com/render/math?math=x[n]"> is the signal recorded by AudioMoth, we estimate the SPL by the mean energy:
 
-<img src="https://render.githubusercontent.com/render/math?math=SPL = \sum_{n=0}^{N-1} x_A^2[n]">
+<img src="https://render.githubusercontent.com/render/math?math=SPL = \frac{1}{N}\sum_{n=0}^{N-1} x_A^2[n]">
 
 where <img src="https://render.githubusercontent.com/render/math?math=N"> is the number of samples in the time <img src="https://render.githubusercontent.com/render/math?math=T">, and <img src="https://render.githubusercontent.com/render/math?math=x_A[n]"> is the [A-weighted](http://www.acoustic-glossary.co.uk/frequency-weighting.htm) signal.
 

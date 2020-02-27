@@ -15,7 +15,7 @@ Note that unlike other methods based on the frequency domain, we apply the weigh
 
 ## Using this firmware
 ### Flashing this firmware to Audiomoth
-To flash this firmware to the AudioMoth, follow the instructions from the [OpenAcoustic team](https://github.com/OpenAcousticDevices/Flash). 
+Flash the `bin/AudioMoth-Firmware-SPL.bin` file following the instructions from the [OpenAcoustic team](https://github.com/OpenAcousticDevices/Flash).
 
 ### Editing this firmware
 To edit this firmware, clone this repository and follow the instructions from the [AudioMoth wiki](https://github.com/OpenAcousticDevices/AudioMoth-Project/wiki/AudioMoth). 

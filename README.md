@@ -1,7 +1,7 @@
 # AudioMoth-Firmware-SPL
-This repository contains an AudioMoth firmware adaptation to calculate the Sound Pressure Level (SPL). This firmware was created the 1.3.0 version of AudioMoth firmware (published on [AudioMoth-Project](https://github.com/OpenAcousticDevices/AudioMoth-Project) and [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic)) as a base. We added the SPL library (`src/spl.c` and `inc/spl.h`) that includes all the functions related to the SPL estimation. 
+This repository contains an AudioMoth firmware adaptation to calculate the Sound Pressure Level (SPL). This firmware is based on the 1.3.0 version of AudioMoth firmware (published on [AudioMoth-Project](https://github.com/OpenAcousticDevices/AudioMoth-Project) and [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic)). We include the SPL library (`src/spl.c` and `inc/spl.h`) that implement all the functions related to the SPL estimation. 
 
-The main modifications of the `src/main.c` file of [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic) are in the [filter](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic/blob/master/main.c#L609). In this function, we add the call of the microphone frequency response compensation and the A-weighting filter of the signal. 
+The main modifications of the `src/main.c` file of [AudioMoth-Firmware-Basic](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic) are in the [filter](https://github.com/OpenAcousticDevices/AudioMoth-Firmware-Basic/blob/master/main.c#L609) function, where we add the call the SPL functions. 
 
 ## SPL calculation
 

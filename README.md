@@ -9,7 +9,7 @@ We estimate the SPL using the audio signal recorded by the AudioMoth. We calcula
 
 <img src="https://render.githubusercontent.com/render/math?math=SPL = \frac{1}{N}\sum_{n=0}^{N-1} x_A^2[n]">
 
-where <img src="https://render.githubusercontent.com/render/math?math=N"> is the number of samples in the time <img src="https://render.githubusercontent.com/render/math?math=T">, and <img src="https://render.githubusercontent.com/render/math?math=x_A[n]"> is the [A-weighted](http://www.acoustic-glossary.co.uk/frequency-weighting.htm) signal. Also, as the AudioMoth microphone does not have a flat frequency response, is necessary to apply a filter to compensate its response. Therefore before we calculate <img src="https://render.githubusercontent.com/render/math?math=x_A[n]">, we apply the filter compensation. The next diagram illustrates the process flow.
+where <img src="https://render.githubusercontent.com/render/math?math=N"> is the number of samples in the time <img src="https://render.githubusercontent.com/render/math?math=T">, and <img src="https://render.githubusercontent.com/render/math?math=x_A[n]"> is the [A-weighted](http://www.acoustic-glossary.co.uk/frequency-weighting.htm) signal. Also, as the AudioMoth microphone does not have a flat frequency response, it is necessary to apply a filter to compensate its response. Therefore before we calculate <img src="https://render.githubusercontent.com/render/math?math=x_A[n]">, we apply the filter compensation. The next diagram illustrates the process flow.
 
 <img src="./notebooks/imgs/diagram.png">
 
@@ -18,7 +18,7 @@ where <img src="https://render.githubusercontent.com/render/math?math=N"> is the
 In order to compensate the microphone frequency response and to apply the A-weighting to the signal, we implement different Infinite Impulse Response (IIR) filters. When the filter order is too high, we split it into parts (first or second order filters). Each of this parts is implemented by the [Direct-Form-II (DF-II)](https://ccrma.stanford.edu/~jos/filters/Direct_Form_II.html) realization. We base our implementation in the result of the [faust filter library](http://faust.grame.fr/editor/libraries/doc/library.html#fi.iir).
 
 ### Microphone response compensation
-In order to have an almost flat microphone's frequency response, we implement an IIR filter that compensates the response in the low frequencies. In the near future, we are going to improve this compensation. See [Mic_compensation_filter](https://github.com/pzinemanas/AudioMoth-Firmware-SPL/blob/master/notebooks/Mic_compensation_filter.ipynb) notebook for more details about filter design process.
+In order to have an almost flat microphone frequency response, we implement an IIR filter that compensates the response in the low frequencies. In the near future, we are going to improve this compensation. See [Mic_compensation_filter](https://github.com/pzinemanas/AudioMoth-Firmware-SPL/blob/master/notebooks/Mic_compensation_filter.ipynb) notebook for more details about filter design process.
 
 ### A-weighting
 

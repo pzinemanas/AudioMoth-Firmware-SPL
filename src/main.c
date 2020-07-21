@@ -58,15 +58,6 @@
 
 #define DC_BLOCKING_FACTOR                  0.995f
 
-/* dBa filter constant */
-#define GA                                  1.2589254117941673f
-#define PI                                  3.141592653589793238462f
-#define CALdBA_low                          82.5f
-#define CALdBA_low_med                      78.4f
-#define CALdBA_med                          71.8f
-#define CALdBA_med_high                     67.8f
-#define CALdBA_high                         65.6f
-
 #define LOG_BUFFER_LENGTH                   50
 
 /* Useful macros */
@@ -407,6 +398,7 @@ int main(void) {
 	/* init compensation filter */
 	SPL_init_compensation_filter(fs);
 
+
 	AM_switchPosition_t switchPosition = AudioMoth_getSwitchPosition();
 
 	if (AudioMoth_isInitialPowerUp()) {
@@ -743,10 +735,6 @@ static void filter(int16_t *source, int16_t *dest, uint8_t sampleRateDivider,
 }
 
 
-
-
-
-
 /* Save recording to SD card */
 
 static AM_recordingState_t makeRecording(uint32_t currentTime,
@@ -958,11 +946,11 @@ static AM_recordingState_t makeRecording(uint32_t currentTime,
 	if (switchPositionChanged)
 		return SWITCH_CHANGED;
 
-	/* Save SPL value to log file*/
+	/* Convert SPL to dB and save value to log file*/
 	SPL_to_dB();
 	SPL_write_log(currentTime);
 
-	/* reset filters */
+	/* Reset filters */
 	SPL_reset_A_weighting_filter();
 	SPL_reset_compensation_filter();
 
